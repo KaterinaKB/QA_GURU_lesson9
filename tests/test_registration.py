@@ -1,54 +1,37 @@
-import os
-from selene import browser
-from selene import have
+from model.pages.registration_page import RegistrationPage
 
 
 def test_registration_with_valid_data():
-    browser.open("/automation-practice-form")
+    registration_page = RegistrationPage()
+    registration_page.open()
 
     # WHEN
-    browser.element("#firstName").type("User")
-    browser.element("#lastName").type("Test")
-    browser.element("#userEmail").type("test@ya.ru")
-    browser.element('[value="Female"] + label').click()
-    browser.element("#userNumber").type("7123456789")
-
-    browser.element("#dateOfBirthInput").click()
-    browser.element(".react-datepicker__month-select").click()
-    browser.all(".react-datepicker__month-select option").element_by(
-        have.exact_text("September")
-    ).click()
-    browser.element(".react-datepicker__year-select").click()
-    browser.all(".react-datepicker__year-select option").element_by(
-        have.exact_text("2001")
-    ).click()
-    browser.all(".react-datepicker__day").element_by(have.exact_text("15")).click()
-
-    browser.element("#subjectsInput").type("Computer Science").press_enter()
-    browser.all("[for^=hobbies]").element_by(have.exact_text("Reading")).click()
-    browser.element("#uploadPicture").type(f"{os.getcwd()}/Grogu.jpg")
-
-    browser.element("#currentAddress").type("Bolshaya Sadovaya Street 302-bis")
-    browser.element("#state").click()
-    browser.all("#state div").element_by(have.exact_text("NCR")).click()
-    browser.element("#city").click()
-    browser.all("#city div").element_by(have.exact_text("Delhi")).click()
-
-    browser.element("#submit").press_enter()
+    (
+        registration_page.fill_first_name("Kate")
+        .fill_last_name("Voronova")
+        .fill_email("test@ya.ru")
+        .choose_female_gender()
+        .fill_phone_number("7123456789")
+        .fill_date_of_birth("2001", "September", "15")
+        .fill_subject("Computer Science")
+        .choose_reading_as_hobby()
+        .select_picture("Grogu.jpg")
+        .fill_current_address("Bolshaya Sadovaya Street 302-bis")
+        .choose_state("NCR")
+        .choose_city("Delhi")
+    )
+    registration_page.submit()
 
     # THEN
-    browser.element(".modal-title").should(have.text("Thanks for submitting the form"))
-    browser.all(".table").all("td").should(
-        have.exact_texts(
-            ("Student Name", "User Test"),
-            ("Student Email", "test@ya.ru"),
-            ("Gender", "Female"),
-            ("Mobile", "7123456789"),
-            ("Date of Birth", "15 September,2001"),
-            ("Subjects", "Computer Science"),
-            ("Hobbies", "Reading"),
-            ("Picture", "Grogu.jpg"),
-            ("Address", "Bolshaya Sadovaya Street 302-bis"),
-            ("State and City", "NCR Delhi"),
-        )
+    registration_page.should_have_registered_user_with(
+        "Kate Voronova",
+        "test@ya.ru",
+        "Female",
+        "7123456789",
+        "15 September,2001",
+        "Computer Science",
+        "Reading",
+        "Grogu.jpg",
+        "Bolshaya Sadovaya Street 302-bis",
+        "NCR Delhi",
     )
