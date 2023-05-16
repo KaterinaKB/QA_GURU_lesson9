@@ -26,7 +26,8 @@ class Users:
     subject: str
     hobby: UserHobby
     picture: str
-    address: str
+    current_address: str
+    permanent_address: str
     state: str
     city: str
 
@@ -36,12 +37,13 @@ student = Users(
     last_name="Voronova",
     email="test@ya.ru",
     gender=UserGender.Female,
-    phone='1234567890',
+    phone="1234567890",
     date_of_birth=datetime.date(2001, 9, 15),
     subject="Computer Science",
     hobby=UserHobby.Reading,
     picture="Grogu.jpg",
-    address="Sadovaya street",
+    current_address="15, Sadovaya street",
+    permanent_address="16, Begovaya street",
     state="NCR",
     city="Delhi",
 )
