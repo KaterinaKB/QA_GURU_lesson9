@@ -1,5 +1,4 @@
 import os
-
 from selene import browser, have, command
 
 
@@ -53,7 +52,9 @@ class RegistrationPage:
         return self
 
     def select_picture(self, value):
-        project_root_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        project_root_path = os.path.dirname(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        )
         resources_path = os.path.join(project_root_path, "tests", "resources")
         browser.element("#uploadPicture").type(f"{resources_path}/{value}")
         return self
