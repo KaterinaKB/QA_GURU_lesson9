@@ -1,5 +1,3 @@
-import datetime
-
 from model.pages.registration_page import RegistrationPage
 from data.users import student
 

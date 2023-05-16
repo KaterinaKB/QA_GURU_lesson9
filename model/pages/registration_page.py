@@ -1,7 +1,6 @@
 import os
-
 from selene import browser, have, command
-from data.users import UserGender, Users
+from data.users import Users
 
 
 class RegistrationPage:
@@ -63,7 +62,9 @@ class RegistrationPage:
         self.gender.click()
         self.phone.type(user.phone)
         self.fill_date_of_birth(
-            user.date_of_birth.strftime('%Y'), user.date_of_birth.strftime('%B'), user.date_of_birth.strftime('%d')
+            user.date_of_birth.strftime("%Y"),
+            user.date_of_birth.strftime("%B"),
+            user.date_of_birth.strftime("%d"),
         )
         self.subject.type(user.subject).press_enter()
         self.hobby.click()
@@ -76,15 +77,15 @@ class RegistrationPage:
     def should_have_registered_user_with(self, user: Users):
         browser.all(".table").all("td").should(
             have.exact_texts(
-                ("Student Name", f'{user.first_name} {user.last_name}'),
+                ("Student Name", f"{user.first_name} {user.last_name}"),
                 ("Student Email", user.email),
                 ("Gender", user.gender.name),
                 ("Mobile", user.phone),
-                ("Date of Birth", user.date_of_birth.strftime('%d %B,%Y')),
+                ("Date of Birth", user.date_of_birth.strftime("%d %B,%Y")),
                 ("Subjects", user.subject),
                 ("Hobbies", user.hobby.name),
                 ("Picture", user.picture),
                 ("Address", user.address),
-                ("State and City", f'{user.state} {user.city}'),
+                ("State and City", f"{user.state} {user.city}"),
             )
         )
