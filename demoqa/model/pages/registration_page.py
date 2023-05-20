@@ -1,6 +1,7 @@
 import os
 from selene import browser, have, command
-from data.users import Users
+from demoqa.data.users import Users
+import allure
 
 
 class RegistrationPage:
@@ -17,6 +18,7 @@ class RegistrationPage:
         self.address = browser.element("#currentAddress")
         self.submit = browser.element("#submit")
 
+    @allure.step('Open registration form')
     def open(self):
         browser.open("/automation-practice-form")
         browser.all("[id^=google_ads][id$=container__]").with_(timeout=10).wait_until(
@@ -39,7 +41,7 @@ class RegistrationPage:
 
     def select_picture(self, value):
         project_root_path = os.path.dirname(
-            os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         )
         resources_path = os.path.join(project_root_path, "tests", "resources")
         browser.element("#uploadPicture").type(f"{resources_path}/{value}")
@@ -55,6 +57,7 @@ class RegistrationPage:
         browser.all("#city div").element_by(have.exact_text(value)).click()
         return self
 
+    @allure.step('Fill registration form')
     def register(self, user: Users):
         self.first_name.type(user.first_name)
         self.last_name.type(user.last_name)
@@ -74,6 +77,7 @@ class RegistrationPage:
         self.choose_city(user.city)
         self.submit.press_enter()
 
+    @allure.step('Check data after registration')
     def should_have_registered_user_with(self, user: Users):
         browser.all(".table").all("td").should(
             have.exact_texts(
